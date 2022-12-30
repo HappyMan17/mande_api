@@ -18,12 +18,12 @@ router.get('/all', (req, res) => {
     }
 
     //use the client for executing the query
-    client.query('SELECT * FROM user;', (err, result) => {
+    client.query('SELECT * FROM user_table;', (err, result) => {
       //call `done(err)` to release the client back to the pool (or destroy it if there is an error)
       done(err);
 
       if (err) {
-        return console.error('error running query', err);
+        return console.error('error running SELECT query', err);
       }
       res.send(JSON.stringify(result.rows));
     });
@@ -37,23 +37,77 @@ router.get('/all', (req, res) => {
 router.post('/add', (req, res, next) => {
   connect(function (err, client, done) {
     if (err) {
-      return console.error('error fetching user from pool', err);
+      return console.error('error ADDING user from pool', err);
     }
 
     const sql = 
-      `INSERT INTO user(
-        email, phone, profile_picture, identification, address, public_services, payment_method
-      ) VALUES (
-        '${req.body.email}', '${req.body.phone}', '${req.body.profile_picture}', 
+      `INSERT INTO user_table(
+        email, phone_number, profile_picture, identification, address, public_services, payment_method,
+      is_active) VALUES (
+        '${req.body.email}', '${req.body.phone_number}', '${req.body.profile_picture}', 
         '${req.body.identification}', '${req.body.address}', '${req.body.public_services}', 
-        '${req.body.paymenth_method}'
+        '${req.body.paymenth_method}', '${req.body.is_active}'
       );`;
 
     //use the client for executing the query
     client.query(sql, (err, result) => {
       done(err);
       if (err) {
-        return console.error('error running query', err);
+        return console.error('error running INSERT query', err);
+      }
+      res.send(JSON.stringify(result));
+    });
+  });
+})
+
+/**
+ * Actualiza un usuario.
+ */
+
+router.put('/update', (req, res, next) => {
+  connect(function (err, client, done) {
+    if (err) {
+      return console.error('error UPDATING user from pool', err);
+    }
+
+    const sql = 
+      `UPDATE user_table SET (
+        profile_picture, identification, address, public_services, payment_method, is_active
+      ) VALUES (
+        '${req.body.profile_picture}','${req.body.identification}', '${req.body.address}', 
+        '${req.body.public_services}', '${req.body.paymenth_method}', '${req.body.is_active}'
+      ) WHERE email='${req.body.email}' AND phone_number='${req.body.phone_number}';` 
+
+    //use the client for executing the query
+    client.query(sql, (err, result) => {
+      done(err);
+      if (err) {
+        return console.error('error running UPDATE query', err);
+      }
+      res.send(JSON.stringify(result));
+    });
+  });
+})
+
+/**
+ * Elimina un usuario.
+ */
+
+router.put('/delete', (req, res, next) => {
+  connect(function (err, client, done) {
+    if (err) {
+      return console.error('error deleting user from pool', err);
+    }
+
+    const sql = 
+      `UPDATE user_table SET is_active = '${req.body.is_active}'
+      WHERE email='${req.body.email}' AND phone_number='${req.body.phone_number}';` 
+
+    //use the client for executing the query
+    client.query(sql, (err, result) => {
+      done(err);
+      if (err) {
+        return console.error('error running DELETE query', err);
       }
       res.send(JSON.stringify(result));
     });
