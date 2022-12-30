@@ -1,6 +1,6 @@
 import express from 'express';
 import Pool from 'pg-pool';
-import config from './config';
+import config from './config.js';
 
 const dataBase = config;
 

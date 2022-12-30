@@ -1,12 +1,17 @@
 import express from 'express';
-import connect from './pool';
+import connect from './pool.js';
 
 const router = express.Router();
+
+router.get('/prueba', (req, res) => {
+  res.send('Funciona');
+})
 
 /**
  * Listar todos los usuarios
  */
-router.get('/mande/user/all', (req, res) => {
+
+router.get('/all', (req, res) => {
   connect((err, client, done) => {
     if (err) {
       return console.error('error fetching users from pool', err);
@@ -29,7 +34,7 @@ router.get('/mande/user/all', (req, res) => {
  * Añade un nuevo usuario
  */
 
-router.post('/mande/user/add', (req, res, next) => {
+router.post('/add', (req, res, next) => {
   connect(function (err, client, done) {
     if (err) {
       return console.error('error fetching user from pool', err);
@@ -53,29 +58,6 @@ router.post('/mande/user/add', (req, res, next) => {
       res.send(JSON.stringify(result));
     });
   });
-
 })
 
-/**
- * Obtiene el usuario por id
- */
-/*
-router.get('/mande/user/:id', (req, res) => {
-  connect((err, client, done) => {
-    if (err) {
-      return console.error('error fetching users from pool', err);
-    }
-
-    //use the client for executing the query
-    client.query(`SELECT id FROM user where id = ${req.param.id};`, (err, result) => {
-
-      done(err);
-
-      if (err) {
-        return console.error('error running query', err);
-      }
-      res.send(JSON.stringify(result.rows));
-    });
-  });
-})
-*/
+export default router;
