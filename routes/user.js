@@ -35,6 +35,7 @@ router.get('/all', (req, res) => {
  */
 
 router.post('/add', (req, res, next) => {
+
   connect(function (err, client, done) {
     if (err) {
       return console.error('error ADDING user from pool', err);
@@ -43,12 +44,12 @@ router.post('/add', (req, res, next) => {
     const sql = 
       `INSERT INTO user_table(
         email, phone_number, profile_picture, identification, address, public_services, payment_method,
-      is_active) VALUES (
+        is_active) VALUES (
         '${req.body.email}', '${req.body.phone_number}', '${req.body.profile_picture}', 
         '${req.body.identification}', '${req.body.address}', '${req.body.public_services}', 
-        '${req.body.paymenth_method}', '${req.body.is_active}'
+        '${req.body.payment_method}', '${req.body.is_active}'
       );`;
-
+    
     //use the client for executing the query
     client.query(sql, (err, result) => {
       done(err);
@@ -65,19 +66,20 @@ router.post('/add', (req, res, next) => {
  */
 
 router.put('/update', (req, res, next) => {
+  console.log(req.body);
   connect(function (err, client, done) {
     if (err) {
       return console.error('error UPDATING user from pool', err);
     }
 
     const sql = 
-      `UPDATE user_table SET (
-        profile_picture, identification, address, public_services, payment_method, is_active
-      ) VALUES (
-        '${req.body.profile_picture}','${req.body.identification}', '${req.body.address}', 
-        '${req.body.public_services}', '${req.body.paymenth_method}', '${req.body.is_active}'
-      ) WHERE email='${req.body.email}' AND phone_number='${req.body.phone_number}';` 
+      `UPDATE user_table SET 
+        profile_picture = '${req.body.profile_picture}', identification = '${req.body.identification}', 
+        address = '${req.body.address}', public_services = '${req.body.public_services}', 
+        payment_method = '${req.body.payment_method}', is_active = '${req.body.is_active}' 
+      WHERE email = '${req.body.email}' AND phone_number = '${req.body.phone_number}';` 
 
+    console.log(sql);
     //use the client for executing the query
     client.query(sql, (err, result) => {
       done(err);
@@ -100,7 +102,7 @@ router.put('/delete', (req, res, next) => {
     }
 
     const sql = 
-      `UPDATE user_table SET is_active = '${req.body.is_active}'
+      `UPDATE user_table SET is_active='${req.body.is_active}'
       WHERE email='${req.body.email}' AND phone_number='${req.body.phone_number}';` 
 
     //use the client for executing the query
