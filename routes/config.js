@@ -1,5 +1,5 @@
 const config = {
-    "user": "postgres", //env var: PGUSER
+    "user": "happy", //env var: PGUSER
     "database": "mande_db", //env var: PGDATABASE
     "password": "letmeinnow", //env var: PGPASSWORD
     "host": "localhost", // Server hosting the postgres database
