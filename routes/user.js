@@ -1,3 +1,5 @@
+/** Esta es la ruta para User y todos sus derivados */
+
 import express from 'express';
 import connect from './pool.js';
 
