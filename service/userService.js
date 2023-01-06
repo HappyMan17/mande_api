@@ -1,4 +1,4 @@
-import connect from './pool.js';
+import connect from '../routes/pool.js';
 
 export const getAllUsers = (res) => {
   connect((err, client, done) => {
