@@ -19,6 +19,25 @@ export const getAllUsers = (res) => {
   });
 }
 
+export const getUserByEmailAndPhoneNumber = (req,res) => {
+  connect((err, client, done) => {
+    if (err) {
+      return console.error('error fetching users from pool', err);
+    }
+    const sql = `SELECT * FROM user_table WHERE email='${req.body.email}' AND phone_number='${req.body.phone_number}';`
+    //use the client for executing the query
+    client.query(sql, (err, result) => {
+      //call `done(err)` to release the client back to the pool (or destroy it if there is an error)
+      done(err);
+
+      if (err) {
+        return console.error('error running SELECT query', err);
+      }
+      res.send(JSON.stringify(result.rows));
+    });
+  });
+}
+
 export const addUser = (res) => {
   connect(function (err, client, done) {
     if (err) {
