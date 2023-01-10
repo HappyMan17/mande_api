@@ -2,7 +2,7 @@
 
 import express from 'express';
 //import connect from './pool.js';
-import {getAllUsers, addUser, updateUser, deleteUser} from "../service/userService.js";
+import {getAllUsers, addUser, updateUser, deleteUser, getUserByEmailAndPhoneNumber} from "../service/userService.js";
 
 const router = express.Router();
 
@@ -12,6 +12,11 @@ const router = express.Router();
 
 router.get('/all', (req, res) => {
   getAllUsers(res);
+})
+
+/**Obtiene el usuario por email y número de telefono desde un .json */
+router.get('/:email/:phone',(req, res)=>{
+  getUserByEmailAndPhoneNumber(req,res);
 })
 
 /**

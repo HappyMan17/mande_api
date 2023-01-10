@@ -19,6 +19,6 @@
     "pg-pool": "^3.5.2"
   },
   "devDependencies": {
-    "nodemon": "2.0.20"
+    "nodemon": "^2.0.20"
   }
 }
