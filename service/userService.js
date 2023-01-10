@@ -19,7 +19,7 @@ export const getAllUsers = (res) => {
   });
 }
 
-export const getUserByEmailAndPhoneNumber = (req,res) => {
+export const getUserByEmailAndPhoneNumber = (req, res) => {
   connect((err, client, done) => {
     if (err) {
       return console.error('error fetching users from pool', err);

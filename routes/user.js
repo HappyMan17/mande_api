@@ -14,9 +14,12 @@ router.get('/all', (req, res) => {
   getAllUsers(res);
 })
 
-/**Obtiene el usuario por email y número de telefono desde un .json */
-router.get('/:email/:phone',(req, res)=>{
-  getUserByEmailAndPhoneNumber(req,res);
+/**
+ * Obtiene el usuario por email y número de telefono
+ * la información llega de un .json
+ */
+router.get('/:email/:phone',(req, res) => {
+  getUserByEmailAndPhoneNumber(req, res);
 })
 
 /**
