@@ -1,7 +1,6 @@
 /** Esta es la ruta para User y todos sus derivados */
 
 import express from 'express';
-//import connect from './pool.js';
 import {getAllUsers, addUser, updateUser, deleteUser, getUserByEmailAndPhoneNumber} from "../service/userService.js";
 
 const router = express.Router();
