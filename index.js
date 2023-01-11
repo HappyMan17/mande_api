@@ -1,9 +1,9 @@
 import express from 'express';
-import userRouter from './routes/user.js';
 import bodyParser from "body-parser";
-import mainRouter from './routes/main.js';
-//const cors = require('cors');
 import cors from 'cors';
+import userRouter from './routes/user.js';
+import employeeRouter from './routes/employee.js';
+import mainRouter from './routes/main.js';
 import authRouter from './routes/auth.js';
 
 const port = 3000;
@@ -19,6 +19,7 @@ app.use(bodyParser.json());
 app.use('/',mainRouter);
 app.use('/mande/user', userRouter);
 app.use("/mande/auth", authRouter);
+app.use("/mande/employee", employeeRouter);
 
 app.get('/mande', (req, res) => {
     res.send("API response");
