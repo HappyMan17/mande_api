@@ -1,5 +1,9 @@
 import connect from '../routes/pool.js';
 
+/**
+ * Query para obtener todos los usuarios de la base
+ * @param {*} res 
+ */
 export const getAllUsers = (res) => {
   connect((err, client, done) => {
     if (err) {
@@ -19,6 +23,12 @@ export const getAllUsers = (res) => {
   });
 }
 
+/**
+ * Promesa que se utiliza para la autenticación
+ * @param {*} req 
+ * @param {*} res 
+ * @returns 
+ */
 export const getUserByEmailAndPhoneNumber = (req, res) => {
   return new Promise((resolve, reject) => {
     connect((err, client, done) => {
@@ -47,16 +57,19 @@ export const getUserByEmailAndPhoneNumber = (req, res) => {
   });
 }
 
-
+/**
+ * Añade a un usuario a la base
+ * @param {*} res 
+ */
 export const addUser = (res) => {
   connect(function (err, client, done) {
     if (err) {
       return console.error('error ADDING user from pool', err);
     }
 
-    const sql = `INSERT INTO user_table(email, phone_number, profile_picture, identification, 
+    const sql = `INSERT INTO user_table(email, phone_number, user_name, user_last_name, 
       address, public_services, payment_method, is_active) VALUES ('${req.body.email}', 
-      '${req.body.phone_number}', '${req.body.profile_picture}', '${req.body.identification}', 
+      '${req.body.phone_number}', '${req.body.user_name}', '${req.body.user_last_name}', 
       '${req.body.address}', '${req.body.public_services}', '${req.body.payment_method}', 
       '${req.body.is_active}');`;
     
@@ -71,14 +84,19 @@ export const addUser = (res) => {
   });
 }
 
+
+/**
+ * actualiza a un usuario en la base de datos
+ * @param {*} res 
+ */
 export const updateUser = (res) =>{
   connect(function (err, client, done) {
     if (err) {
       return console.error('error UPDATING user from pool', err);
     }
 
-    const sql = `UPDATE user_table SET profile_picture='${req.body.profile_picture}', 
-      identification='${req.body.identification}', address='${req.body.address}', 
+    const sql = `UPDATE user_table SET user_name='${req.body.user_name}', 
+      user_last_name='${req.body.user_last_name}', address='${req.body.address}', 
       public_services='${req.body.public_services}', payment_method='${req.body.payment_method}', 
       is_active='${req.body.is_active}' WHERE email = '${req.body.email}' AND 
       phone_number='${req.body.phone_number}';` 
@@ -95,6 +113,10 @@ export const updateUser = (res) =>{
   });
 }
 
+/**
+ * Elimina a un usuario de la base, cambiando su is_active a false
+ * @param {*} res 
+ */
 export const deleteUser = (res) =>{
   connect(function (err, client, done) {
     if (err) {

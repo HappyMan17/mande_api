@@ -2,7 +2,7 @@ import express from 'express';
 import bodyParser from "body-parser";
 import cors from 'cors';
 import userRouter from './routes/user.js';
-import employeeRouter from './routes/employee.js';
+import workerRouter from './routes/worker.js';
 import mainRouter from './routes/main.js';
 import authRouter from './routes/auth.js';
 
@@ -19,7 +19,7 @@ app.use(bodyParser.json());
 app.use('/',mainRouter);
 app.use('/mande/user', userRouter);
 app.use("/mande/auth", authRouter);
-app.use("/mande/employee", employeeRouter);
+app.use("/mande/worker", workerRouter);
 
 app.get('/mande', (req, res) => {
     res.send("API response");
