@@ -61,7 +61,7 @@ export const getUserByEmailAndPhoneNumber = (req, res) => {
  * Añade a un usuario a la base
  * @param {*} res 
  */
-export const addUser = (res) => {
+export const addUser = (req, res) => {
   connect(function (err, client, done) {
     if (err) {
       return console.error('error ADDING user from pool', err);
@@ -89,7 +89,7 @@ export const addUser = (res) => {
  * actualiza a un usuario en la base de datos
  * @param {*} res 
  */
-export const updateUser = (res) =>{
+export const updateUser = (req, res) =>{
   connect(function (err, client, done) {
     if (err) {
       return console.error('error UPDATING user from pool', err);
@@ -117,7 +117,7 @@ export const updateUser = (res) =>{
  * Elimina a un usuario de la base, cambiando su is_active a false
  * @param {*} res 
  */
-export const deleteUser = (res) =>{
+export const deleteUser = (req, res) =>{
   connect(function (err, client, done) {
     if (err) {
       return console.error('error deleting user from pool', err);
