@@ -26,7 +26,7 @@ router.get('/:email/:phone',(req, res) => {
  */
 
 router.post('/add', (req, res, next) => {
-  addUser(res);
+  addUser(req,res);
 })
 
 /**
