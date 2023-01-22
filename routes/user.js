@@ -34,7 +34,7 @@ router.post('/add', (req, res, next) => {
  */
 
 router.put('/update', (req, res, next) => {
-  updateUser(res);
+  updateUser(req, res);
 })
 
 /**
@@ -42,7 +42,7 @@ router.put('/update', (req, res, next) => {
  */
 
 router.put('/delete', (req, res, next) => {
-  deleteUser(res);
+  deleteUser(req, res);
 })
 
 export default router;

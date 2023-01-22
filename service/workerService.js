@@ -85,7 +85,7 @@ export const updateWorker = (req, res) => {
  * Elimina a un trabajador de la base, cambiando su is_active a false
  * @param {*} res 
  */
-export const deleteWorker = (res) =>{
+export const deleteWorker = (req, res) =>{
   connect(function (err, client, done) {
     if (err) {
       return console.error('error deleting worker from pool', err);
