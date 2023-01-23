@@ -68,10 +68,10 @@ export const addUser = (req,res) => {
     }
 
     const sql = `INSERT INTO user_table(email, phone_number, user_name, user_last_name, 
-      address, public_services, payment_method, is_active) VALUES ('${req.body.user.email}', 
-      '${req.body.user.phone_number}', '${req.body.user.user_name}', '${req.body.user.user_last_name}', 
-      '${req.body.user.address}', '${req.body.user.public_services}', '${req.body.user.payment_method}', 
-      'true');`;
+      address, public_services, payment_method, is_active) VALUES ('${req.body.email}', 
+      '${req.body.phone_number}', '${req.body.user_name}', '${req.body.user_last_name}', 
+      '${req.body.address}', '${req.body.public_services}', '${req.body.payment_method}', 
+      '${req.body.is_active}');`;
     
     //use the client for executing the query
     client.query(sql, (err, result) => {
@@ -136,3 +136,4 @@ export const deleteUser = (req, res) =>{
     });
   });
 }
+
