@@ -24,6 +24,40 @@ export const getAllWorkers = (res) => {
 }
 
 /**
+ * Promesa que se utiliza para la autenticación
+ * @param {*} req 
+ * @param {*} res 
+ * @returns 
+ */
+export const getWorkerByEmailAndPhoneNumber = (req, res) => {
+  return new Promise((resolve, reject) => {
+    connect((err, client, done) => {
+      if (err) {
+        return reject(err);
+      }
+      const sql = `SELECT * FROM worker WHERE email='${req.body.email}' AND phone_number='${req.body.phone_number}';`;
+      //use the client for executing the query
+      client.query(sql, (err, result) => {
+        //call `done(err)` to release the client back to the pool (or destroy it if there is an error)
+        done(err);
+
+        if (err) {
+          return reject(err);
+        }
+
+        if (result.rows.length === 0) {
+          // No se encontró el usuario
+          return reject(new Error("Usuario no encontrado"));
+        }
+
+        // Usuario encontrado
+        resolve(result.rows[0]);
+      });
+    });
+  });
+}
+
+/**
  * Añade a un usuario a la base de datos
  * @param {*} req 
  * @param {*} res 
@@ -33,6 +67,8 @@ export const addWorker = (req, res) => {
     if (err) {
       return console.error('error fetching worker from pool', err);
     }
+
+    console.log(`AVALAIBLE ${req.body.email}`);
 
     const sql = `INSERT INTO worker(email, phone_number, worker_name, worker_last_name, profile_image, 
       identification_image, address, stars, available, is_active ) VALUES ('${req.body.email}', 
