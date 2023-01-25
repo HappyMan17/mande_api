@@ -33,10 +33,11 @@ export const addJobOffered = (req, res) => {
     if (err) {
       return console.error('error fetching job_offered from pool', err);
     }
+    console.log(`WORKID ${req.body.work_id}`);
 
     const sql = `INSERT INTO job_offered(job_offered_id, worker_email, worker_phone_number, 
       work_id, is_active ) VALUES ('${req.body.job_offered_id}', '${req.body.worker_email}',
-      '${req.body.worker_phone_number}', '${req.body.work_id}', '${req.body.is_active}');`;
+      '${req.body.worker_phone_number}', '${req.body.work_id}', 'true');`;
 
     //use the client for executing the query
     client.query(sql, (err, result) => {
