@@ -7,7 +7,7 @@ router.get('/all', (req, res) => {
   getAllJobs(res);
 })
 
-router.get('/filter', (req, res) => {
+router.get('/:work_id', (req, res) => {
   getJobsByWorkId(req, res);
 })
 

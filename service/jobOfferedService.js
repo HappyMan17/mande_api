@@ -33,7 +33,7 @@ export const getJobsByWorkId = (req, res) => {
     if (err) {
       return console.error('error fetching job_offered from pool on job by id', err);
     }
-    const sql = `SELECT * FROM work WHERE work_id='${req.body.work_id}';`;
+    const sql = `SELECT * FROM work WHERE work_id='${req.params.work_id}';`;
     //use the client for executing the query
     client.query(sql, (err, result) => {
       //call `done(err)` to release the client back to the pool (or destroy it if there is an error)
