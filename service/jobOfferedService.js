@@ -33,7 +33,7 @@ export const getJobsByWorkId = (req, res) => {
     if (err) {
       return console.error('error fetching job_offered from pool on job by id', err);
     }
-    const sql = `SELECT * FROM work WHERE work_id='${req.params.work_id}';`;
+    const sql = `SELECT * FROM job_offered WHERE work_id='${req.params.work_id}';`;
     //use the client for executing the query
     client.query(sql, (err, result) => {
       //call `done(err)` to release the client back to the pool (or destroy it if there is an error)
@@ -61,8 +61,8 @@ export const addJobOffered = (req, res) => {
     console.log(`WORKID ${req.body.work_id}`);
 
     const sql = `INSERT INTO job_offered(job_offered_id, worker_email, worker_phone_number, 
-      work_id, is_active ) VALUES ('${req.body.job_offered_id}', '${req.body.worker_email}',
-      '${req.body.worker_phone_number}', '${req.body.work_id}', 'true');`;
+      work_id, is_active, cost_per_service) VALUES ('${req.body.job_offered_id}', '${req.body.worker_email}',
+      '${req.body.worker_phone_number}', '${req.body.work_id}', 'true', '${req.body.cost_per_service}');`;
 
     //use the client for executing the query
     client.query(sql, (err, result) => {
@@ -87,8 +87,8 @@ export const updateJobOffered = (req, res) => {
       return console.error('error fetching job_offered from pool', err);
     }
 
-    const sql = `UPDATE worker set job_offered_id='${req.body.job_offered_id}', worker_email='${req.body.worker_email}', 
-      worker_phone_number='${req.body.worker_phone_number}', work_id='${req.body.work_id}', is_active='${req.body.is_active}'`;
+    const sql = `UPDATE job_offered set job_offered_id='${req.body.job_offered_id}', worker_email='${req.body.worker_email}', 
+      worker_phone_number='${req.body.worker_phone_number}', work_id='${req.body.work_id}', is_active='${req.body.is_active}', cost_per_service='${req.body.cost_per_service}`;
 
     //use the client for executing the query
     client.query(sql, (err, result) => {
