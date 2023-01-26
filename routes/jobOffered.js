@@ -1,10 +1,14 @@
 import express from 'express';
-import { getAllJobs, addJobOffered, updateJobOffered, deleteJobOffered } from '../service/jobOfferedService.js';
+import { getAllJobs, addJobOffered, updateJobOffered, deleteJobOffered, getJobsByWorkId } from '../service/jobOfferedService.js';
 
 const router = express.Router();
 
 router.get('/all', (req, res) => {
   getAllJobs(res);
+})
+
+router.get('/filter', (req, res) => {
+  getJobsByWorkId(req, res);
 })
 
 router.post('/add', (req, res) => {

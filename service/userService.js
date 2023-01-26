@@ -137,3 +137,17 @@ export const deleteUser = (req, res) =>{
   });
 }
 
+export const uploadFile = (req, res) => {
+  connect(function (err, client, done) {
+    if (err) {
+      return console.error('error connecting to the pool on upload', err);
+    }
+
+    const file = req.file;
+    if(!file) {
+      res.status(400).send("something went wrong!")
+    }
+    console.log('llegamos ', req.file);
+    res.send(req.file);
+  })
+}

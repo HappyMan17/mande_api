@@ -1,8 +1,10 @@
 /** Esta es la ruta para User y todos sus derivados */
 
 import express from 'express';
-import {getAllUsers, addUser, updateUser, deleteUser, getUserByEmailAndPhoneNumber} from "../service/userService.js";
+import {getAllUsers, addUser, updateUser, deleteUser, getUserByEmailAndPhoneNumber, uploadFile} from "../service/userService.js";
+import multer from 'multer';
 
+const upload = multer({dest:'uploads/'});
 const router = express.Router();
 
 /**
@@ -43,6 +45,11 @@ router.put('/update', (req, res, next) => {
 
 router.put('/delete', (req, res, next) => {
   deleteUser(req, res);
+})
+
+
+router.post('/upload', upload.single('Image'), (req, res, next) => {
+  uploadFile(req, res);
 })
 
 export default router;

@@ -24,6 +24,31 @@ export const getAllJobs = (res) => {
 }
 
 /**
+ * Obtiene a todos los trabajos ofrecidos de la base de acuerdo con el work id
+ * @param {*} req
+ * @param {*} res
+ */
+export const getJobsByWorkId = (req, res) => {
+  connect((err, client, done) => {
+    if (err) {
+      return console.error('error fetching job_offered from pool on job by id', err);
+    }
+    const sql = `SELECT * FROM work WHERE work_id='${req.body.work_id}';`;
+    //use the client for executing the query
+    client.query(sql, (err, result) => {
+      //call `done(err)` to release the client back to the pool (or destroy it if there is an error)
+      done(err);
+
+      if (err) {
+        return console.error('error running SELECT BY ID query in job_offered', err);
+      }
+      // Usuario encontrado
+      res.send(JSON.stringify(result.rows));
+    });
+  });
+}
+
+/**
  * Añade a un trabajo ofrecido por un trabajador a la base de datos
  * @param {*} req 
  * @param {*} res 
