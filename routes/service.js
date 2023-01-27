@@ -1,5 +1,5 @@
 import express from "express";
-import { addService, getAllServices, updateService, updateServiceStars, updateServiceState } from "../service/ServiceServices.js";
+import { addService, getAllServices, updateService, updateServiceStars, updateServiceState,getAllServicesByJobOfferedId } from "../service/ServiceServices.js";
 
 const router = express.Router();
 

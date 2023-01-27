@@ -23,7 +23,7 @@ export const getAllJobs = (res) => {
 }
 
 /**
- * Obtiene a todos los trabajos ofrecidos de la base de acuerdo con el work id
+ * Obtiene a todos los trabajos ofrecidos de la base de acuerdo con el work id y si signed=false ya que esto indicaría que no está contratado y puede ser contratado
  * @param {*} req
  * @param {*} res
  */
@@ -32,7 +32,7 @@ export const getJobsByWorkId = (req, res) => {
     if (err) {
       return console.error('error fetching from pool on job_offered', err);
     }
-    const sql = `SELECT * FROM job_offered WHERE work_id='${req.params.work_id}' AND is_active='true';`;
+    const sql = `SELECT * FROM job_offered WHERE work_id='${req.params.work_id}' AND signed='f';`;
 
     client.query(sql, (err, result) => {
 
@@ -56,15 +56,16 @@ export const getJobOfferedByWorker = (req, res) => {
     if (err) {
       return console.error('error fetching from pool job offered', err);
     }
-    const sql = `SELECT * FROM job_offered WHERE worker_email='${req.body.worker_email}' 
-      AND worker_phone_number='${req.body.worker_phone_number}' AND is_active='true';`;
+
+    const sql = `SELECT * FROM job_offered WHERE worker_email='${req.params.worker_email}' 
+      AND worker_phone_number='${req.params.worker_phone}' AND signed='true';`;
 
     client.query(sql, (err, result) => {
 
       done(err);
 
       if (err) {
-        return console.error('error running SELECT BY ID query in job_offered', err);
+        return console.error('error running SELECT BY ID AQUII query in job_offered', err);
       }
       res.send(JSON.stringify(result.rows));
     });
@@ -83,8 +84,8 @@ export const addJobOffered = (req, res) => {
     }
 
     const sql = `INSERT INTO job_offered(job_offered_id, worker_email, worker_phone_number, 
-      work_id, is_active, cost_per_service) VALUES ('${req.body.job_offered_id}', '${req.body.worker_email}',
-      '${req.body.worker_phone_number}', '${req.body.work_id}', 'true', '${req.body.cost_per_service}');`;
+      work_id, signed, cost_per_service) VALUES ('${req.body.job_offered_id}', '${req.body.worker_email}',
+      '${req.body.worker_phone_number}', '${req.body.work_id}', 'false', '${req.body.cost_per_service}');`;
 
     client.query(sql, (err, result) => {
 
@@ -110,7 +111,7 @@ export const updateJobOffered = (req, res) => {
     }
 
     const sql = `UPDATE job_offered set worker_email='${req.body.worker_email}', worker_phone_number='${req.body.worker_phone_number}', 
-    work_id='${req.body.work_id}', is_active='${req.body.is_active}', cost_per_service='${req.body.cost_per_service} 
+    work_id='${req.body.work_id}', signed='${req.body.signed}', cost_per_service='${req.body.cost_per_service} 
     WHERE job_offered_id='${req.body.job_offered_id}'`;
 
     client.query(sql, (err, result) => {
@@ -126,7 +127,7 @@ export const updateJobOffered = (req, res) => {
 }
 
 /**
- * Elimina un trabajo ofrecido de la base, cambiando su is_active a false
+ * Elimina un trabajo ofrecido de la base, cambiando su signed a true asumiendo así que está contratado así que en UserHome no se puede mostrar, pero si en WorkerHome
  * @param {*} req 
  * @param {*} res 
  */
@@ -136,7 +137,7 @@ export const deleteJobOffered = (req, res) =>{
       return console.error('error fetching from pool on job_offered', err);
     }
 
-    const sql = `UPDATE job_offered SET is_active='false' 
+    const sql = `UPDATE job_offered SET signed='true' 
       WHERE job_offered_id='${req.params.job_offered_id}';` 
 
     client.query(sql, (err, result) => {

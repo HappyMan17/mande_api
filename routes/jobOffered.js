@@ -1,5 +1,5 @@
 import express from 'express';
-import { getAllJobs, addJobOffered, updateJobOffered, deleteJobOffered, getJobsByWorkId } from '../service/jobOfferedService.js';
+import { getAllJobs, addJobOffered, updateJobOffered, deleteJobOffered, getJobsByWorkId, getJobOfferedByWorker } from '../service/jobOfferedService.js';
 
 const router = express.Router();
 
@@ -20,7 +20,7 @@ router.get('/:work_id', (req, res) => {
 /**
  * Lista los trabajos ofrecidos de un trabajador
  */
-router.get('/forWorker', (req, res) => {
+router.get('/worker/:worker_email/:worker_phone', (req, res) => {
   getJobOfferedByWorker(req, res);
 })
 
