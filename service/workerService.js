@@ -124,8 +124,9 @@ export const deleteWorker = (req, res) =>{
       return console.error('error deleting worker from pool', err);
     }
 
-    const sql = `UPDATE worker SET is_active='false' 
-      WHERE email='${req.body.email}' AND phone_number='${req.body.phone_number}';` 
+    console.log(`EMAIL: ${req.body.email} PHONE ${req.body.phone_number}`);
+
+    const sql = `UPDATE worker SET is_active='false' WHERE email='${req.body.email}' AND phone_number='${req.body.phone_number}';` 
 
     client.query(sql, (err, result) => {
       done(err);

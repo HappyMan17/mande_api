@@ -32,7 +32,7 @@ export const getJobsByWorkId = (req, res) => {
     if (err) {
       return console.error('error fetching from pool on job_offered', err);
     }
-    const sql = `SELECT * FROM job_offered WHERE work_id='${req.params.work_id}';`;
+    const sql = `SELECT * FROM job_offered WHERE work_id='${req.params.work_id}' AND is_active='true';`;
 
     client.query(sql, (err, result) => {
 
@@ -57,7 +57,7 @@ export const getJobOfferedByWorker = (req, res) => {
       return console.error('error fetching from pool job offered', err);
     }
     const sql = `SELECT * FROM job_offered WHERE worker_email='${req.body.worker_email}' 
-      AND worker_phone_number='${req.body.worker_phone_number}';`;
+      AND worker_phone_number='${req.body.worker_phone_number}' AND is_active='true';`;
 
     client.query(sql, (err, result) => {
 

@@ -41,7 +41,7 @@ router.put('/status/:service_id/:status', (req, res) => {
 /** 
  * Actualiza las estrellas de un servicio
 */
-router.put('/status/:service_id/:service_stars', (req, res) => {
+router.put('/stars/:service_id/:service_stars', (req, res) => {
   updateServiceStars(req, res);
 })
 

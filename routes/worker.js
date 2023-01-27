@@ -28,7 +28,7 @@ router.put('/update', (req, res, next) => {
  * Elimina un trabajador actualizando su is_active
  */
 router.put('/delete', (req, res, next) => {
-  deleteWorker(res);
+  deleteWorker(req,res);
 })
 
 export default router;
