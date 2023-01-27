@@ -22,6 +22,24 @@ export const getAllWorks = (res) => {
   });
 }
 
+export const getWorkNameById = (req, res) => {
+  connect((err, client, done) => {
+    if (err) {
+      return console.error('error fetching from pool on work', err);
+    }
+
+    client.query(`SELECT * FROM work WHERE work_id='${req.params.work_id}';`, (err, result) => {
+
+      done(err);
+
+      if (err) {
+        return console.error('error running SELECT query on work', err);
+      }
+      res.send(JSON.stringify(result.rows));
+    });
+  });
+}
+
 /**
  * Añade a un trabajo a la base
  * @param {*} req

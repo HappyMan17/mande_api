@@ -11,6 +11,13 @@ router.get('/all', (req, res) => {
 })
 
 /**
+ * Retorna el nombre de un trabajo
+ */
+router.get('/name/:work_id', (req, res) => {
+  getWorkNameById(req, res);
+})
+
+/**
  * Añade un trabajo
  */
 router.post('/add', (req, res) => {
