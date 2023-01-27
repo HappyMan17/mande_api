@@ -13,7 +13,6 @@ router.get('/all', (req, res) => {
 /**
  * Añade un nuevo trabajador
  */
-
 router.post('/add', (req, res, next) => {
   addWorker(req, res);
 })
@@ -21,15 +20,13 @@ router.post('/add', (req, res, next) => {
 /**
  * Actualiza un trabajador.
  */
-
 router.put('/update', (req, res, next) => {
   updateWorker(req, res);
 })
 
 /**
- * Elimina un trabajador.
+ * Elimina un trabajador actualizando su is_active
  */
-
 router.put('/delete', (req, res, next) => {
   deleteWorker(res);
 })
