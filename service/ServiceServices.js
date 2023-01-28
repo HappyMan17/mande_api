@@ -72,6 +72,32 @@ export const getAllServicesDoneByJobOfferedId = (req, res) => {
   });
 }
 
+
+/**
+ * Obtiene a todos los servicios pagados de acuerdo con su job offered id
+ * @param {*} req 
+ * @param {*} res 
+ */
+export const getAllServicesPaidByJobOfferedId = (req, res) => {
+  connect((err, client, done) => {
+    if (err) {
+      return console.error('error fetching from pool on service', err);
+    }
+
+    const sql = `SELECT * FROM service WHERE job_offered_id='${req.params.job_offered_id}' AND paid='true';`
+    
+    client.query(sql, (err, result) => {
+      
+      done(err);
+
+      if (err) {
+        return console.error('error running SELECT WHERE query on service', err);
+      }
+      res.send(JSON.stringify(result.rows));
+    });
+  });
+}
+
 /**
  * Añade un servicio a la base
  * @param {*} req 

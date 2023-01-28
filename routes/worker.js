@@ -1,5 +1,5 @@
 import express from "express";
-import {getAllWorkers, addWorker, updateWorker, deleteWorker, getWorkerByEmailAndPhoneNumber, updateWorkerIsActive} from '../service/workerService.js'
+import {getAllWorkers, addWorker, updateWorker, deleteWorker, getWorkerByEmailAndPhoneNumber, updateWorkerIsActive,getWorkerKey} from '../service/workerService.js'
 
 const router = express.Router();
 
@@ -10,8 +10,8 @@ router.get('/all', (req, res) => {
   getAllWorkers(res);
 })
 
-router.get('/worker/:email/:phone_number', (req, res) => {
-  getWorkerByEmailAndPhoneNumber(req, res);
+router.get('/byKey/:email/:phone_number', (req, res) => {
+  getWorkerKey(req, res);
 })
 
 /**

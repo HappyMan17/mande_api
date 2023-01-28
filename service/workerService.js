@@ -22,6 +22,28 @@ export const getAllWorkers = (res) => {
   });
 }
 
+export const getWorkerKey = (req, res) => {
+    connect((err, client, done) => {
+      if (err) {
+        return reject(err);
+      }
+      const sql = `SELECT * FROM worker WHERE email='${req.params.email}' AND phone_number='${req.params.phone_number}';`;
+
+      //use the client for executing the query
+      client.query(sql, (err, result) => {
+        //call `done(err)` to release the client back to the pool (or destroy it if there is an error)
+        done(err);
+
+        if (err) {
+          return console.error('error running SELECT query on worker', err);
+        }
+
+        // Usuario encontrado
+        res.send(JSON.stringify(result.rows));
+      });
+    });
+}
+
 /**
  * Promesa que se utiliza para la autenticación
  * @param {*} req 
@@ -34,7 +56,8 @@ export const getWorkerByEmailAndPhoneNumber = (req, res) => {
       if (err) {
         return reject(err);
       }
-      const sql = `SELECT * FROM worker WHERE email='${req.params.email}' AND phone_number='${req.params.phone_number}';`;
+      const sql = `SELECT * FROM worker WHERE email='${req.body.email}' AND phone_number='${req.body.phone_number}';`;
+
       //use the client for executing the query
       client.query(sql, (err, result) => {
         //call `done(err)` to release the client back to the pool (or destroy it if there is an error)
