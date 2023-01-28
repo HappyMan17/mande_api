@@ -1,5 +1,5 @@
 import express from "express";
-import { addService, getAllServices, updateService, updateServiceStars, updateServiceState,getAllServicesByJobOfferedId } from "../service/ServiceServices.js";
+import { addService, getAllServices, updateService, updateServiceStars, getAllServicesByJobOfferedId, getAllServicesDoneByJobOfferedId, updateServiceDone } from "../service/ServiceServices.js";
 
 const router = express.Router();
 
@@ -15,6 +15,13 @@ router.get('/all', (req, res) => {
 */
 router.get('/:job_offered_id', (req, res) => {
   getAllServicesByJobOfferedId(req, res);
+})
+
+/** 
+ * Lista los servicios terminados de un determinado trabajo ofrecido
+*/
+router.get('/:job_offered_id', (req, res) => {
+  getAllServicesDoneByJobOfferedId(req, res);
 })
 
 /** 
@@ -34,8 +41,8 @@ router.put('/update', (req, res) => {
 /** 
  * Actualiza el estado de un servicio
 */
-router.put('/status/:service_id/:status', (req, res) => {
-  updateServiceState(req, res);
+router.put('/status/:service_id/:done', (req, res) => {
+  updateServiceDone(req, res);
 })
 
 /** 

@@ -1,5 +1,5 @@
 import express from "express";
-import {getAllWorkers, addWorker, updateWorker, deleteWorker} from '../service/workerService.js'
+import {getAllWorkers, addWorker, updateWorker, deleteWorker, getWorkerByEmailAndPhoneNumber, updateWorkerIsActive} from '../service/workerService.js'
 
 const router = express.Router();
 
@@ -8,6 +8,10 @@ const router = express.Router();
  */
 router.get('/all', (req, res) => {
   getAllWorkers(res);
+})
+
+router.get('/worker/:email/:phone_number', (req, res) => {
+  getWorkerByEmailAndPhoneNumber(req, res);
 })
 
 /**
@@ -22,6 +26,13 @@ router.post('/add', (req, res, next) => {
  */
 router.put('/update', (req, res, next) => {
   updateWorker(req, res);
+})
+
+/**
+ * Actualiza el is_active de un trabajador.
+ */
+router.put('/:email/:phone_number/:is_active', (req, res, next) => {
+  updateWorkerIsActive(req, res);
 })
 
 /**

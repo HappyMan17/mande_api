@@ -34,7 +34,7 @@ export const getWorkerByEmailAndPhoneNumber = (req, res) => {
       if (err) {
         return reject(err);
       }
-      const sql = `SELECT * FROM worker WHERE email='${req.body.email}' AND phone_number='${req.body.phone_number}';`;
+      const sql = `SELECT * FROM worker WHERE email='${req.params.email}' AND phone_number='${req.params.phone_number}';`;
       //use the client for executing the query
       client.query(sql, (err, result) => {
         //call `done(err)` to release the client back to the pool (or destroy it if there is an error)
@@ -115,15 +115,36 @@ export const updateWorker = (req, res) => {
 }
 
 /**
+ * Actualiza el is_active de un trabajador.
+ * @param {*} res 
+ */
+export const updateWorkerIsActive = (req, res) =>{
+  connect(function (err, client, done) {
+    if (err) {
+      return console.error('error fetching from pool on worker', err);
+    }
+
+    const sql = `UPDATE worker SET is_active='${req.params.is_active}' WHERE email='${req.params.email}' AND phone_number='${req.params.phone_number}';` 
+
+    client.query(sql, (err, result) => {
+      done(err);
+      if (err) {
+        return console.error('error running Update is_active query', err);
+      }
+      res.send(JSON.stringify(result));
+    });
+  });
+}
+
+/**
  * Elimina a un trabajador de la base, cambiando su is_active
  * @param {*} res 
  */
 export const deleteWorker = (req, res) =>{
   connect(function (err, client, done) {
     if (err) {
-      return console.error('error deleting worker from pool', err);
+      return console.error('error fetching from pool on worker', err);
     }
-
 
     const sql = `UPDATE worker SET is_active='false' WHERE email='${req.body.email}' AND phone_number='${req.body.phone_number}';` 
 

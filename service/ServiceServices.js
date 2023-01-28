@@ -48,6 +48,31 @@ export const getAllServicesByJobOfferedId = (req, res) => {
 }
 
 /**
+ * Obtiene a todos los servicios terminados de acuerdo con su job offered id
+ * @param {*} req 
+ * @param {*} res 
+ */
+export const getAllServicesDoneByJobOfferedId = (req, res) => {
+  connect((err, client, done) => {
+    if (err) {
+      return console.error('error fetching from pool on service', err);
+    }
+
+    const sql = `SELECT * FROM service WHERE job_offered_id='${req.params.job_offered_id}' AND done='true';`
+    
+    client.query(sql, (err, result) => {
+      
+      done(err);
+
+      if (err) {
+        return console.error('error running SELECT WHERE query on service', err);
+      }
+      res.send(JSON.stringify(result.rows));
+    });
+  });
+}
+
+/**
  * Añade un servicio a la base
  * @param {*} req 
  * @param {*} res 
@@ -62,7 +87,7 @@ export const addService = (req, res) => {
       service_stars, date_begin, date_end, paid, status) VALUES ('${req.body.service_id}',
       '${req.body.job_offered_id}', '${req.body.user_email}', '${req.body.user_phone}', '${req.body.cost}', 
       '${req.body.service_stars}', '${req.body.date_begin}','${req.body.date_end}','${req.body.paid}',
-      '${req.body.status}');`
+      '${req.body.done}');`
     
     client.query(sql, (err, result) => {
       
@@ -91,7 +116,7 @@ export const updateService = (req, res) => {
       service_stars, date_begin, date_end, paid, units, status) = ('${req.body.job_offered_id}', 
       '${req.body.user_email}', '${req.body.user_phone}', '${req.body.cost}', 
       '${req.body.service_stars}', '${req.body.date_begin}','${req.body.date_end}','${req.body.paid}',
-      '${req.body.units}','${req.body.status}') WHERE service_id='${req.body.service_id}';`
+      '${req.body.units}','${req.body.done}') WHERE service_id='${req.body.service_id}';`
 
     client.query(sql, (err, result) => {
 
@@ -110,13 +135,13 @@ export const updateService = (req, res) => {
  * @param {*} req 
  * @param {*} res 
  */
-export const updateServiceState = (req, res) => {
+export const updateServiceDone = (req, res) => {
   connect((err, client, done) => {
     if (err) {
       return console.error('error fetching from pool on service', err);
     }
 
-    const sql = `UPDATE service set status='${req.params.status}' WHERE service_id='${req.params.service_id}';`;
+    const sql = `UPDATE service set done='${req.params.done}' WHERE service_id='${req.params.service_id}';`;
 
     client.query(sql, (err, result) => {
 

@@ -1,5 +1,5 @@
 import express from 'express';
-import { getAllJobs, addJobOffered, updateJobOffered, deleteJobOffered, getJobsByWorkId, getJobOfferedByWorker } from '../service/jobOfferedService.js';
+import { getAllJobs, addJobOffered, updateJobOffered, deleteJobOffered, getJobsByWorkId, getJobOfferedByWorker, updateSignedByJobOfferedId } from '../service/jobOfferedService.js';
 
 const router = express.Router();
 
@@ -37,6 +37,14 @@ router.post('/add', (req, res) => {
 router.put('/update', (req, res) => {
   updateJobOffered(req, res);
 })
+
+/**
+ * Actualiza el signed de un trabajo
+ */
+router.put('/signed/:job_offered_id/:signed', (req, res) => {
+  updateSignedByJobOfferedId(req, res);
+})
+
 
 /**
  * Elimina un trabajo cambiando su is_active a false

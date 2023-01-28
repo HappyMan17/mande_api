@@ -112,7 +112,33 @@ export const updateJobOffered = (req, res) => {
 
     const sql = `UPDATE job_offered set worker_email='${req.body.worker_email}', worker_phone_number='${req.body.worker_phone_number}', 
     work_id='${req.body.work_id}', signed='${req.body.signed}', cost_per_service='${req.body.cost_per_service} 
-    WHERE job_offered_id='${req.body.job_offered_id}'`;
+    WHERE job_offered_id='${req.body.job_offered_id}';`;
+
+    client.query(sql, (err, result) => {
+
+      done(err);
+
+      if (err) {
+        return console.error('error running UPDATE query', err);
+      }
+      res.send(JSON.stringify(result.rows));
+    });
+  });
+}
+
+/**
+ * Actualiza el signed de un trabajo ofrecido
+ * @param {*} req 
+ * @param {*} res 
+ */
+export const updateSignedByJobOfferedId = (req, res) => {
+  connect((err, client, done) => {
+    if (err) {
+      return console.error('error fetching from pool on job_offered', err);
+    }
+
+    const sql = `UPDATE job_offered set signed='${req.params.signed}' 
+      WHERE job_offered_id='${req.params.job_offered_id}';`;
 
     client.query(sql, (err, result) => {
 
