@@ -1,5 +1,5 @@
 import express from 'express';
-import { getAllJobs, addJobOffered, updateJobOffered, deleteJobOffered, getJobsByWorkId, getJobOfferedByWorker, updateSignedByJobOfferedId } from '../service/jobOfferedService.js';
+import { getAllJobs, addJobOffered, updateJobOffered, deleteJobOffered, getJobsByJobOfferedId, getAllJobOfferedByWorker, getJobsByWorkId, getJobOfferedByWorker, updateSignedByJobOfferedId } from '../service/jobOfferedService.js';
 
 const router = express.Router();
 
@@ -18,10 +18,21 @@ router.get('/:work_id', (req, res) => {
 })
 
 /**
+ * Lista los trabajos ofrecidos por el job_offered_id */
+router.get('/byJobOfferedId/:job_offered_id', (req, res) => {
+  getJobsByJobOfferedId(req, res);
+})
+
+/**
  * Lista los trabajos ofrecidos de un trabajador
  */
 router.get('/worker/:worker_email/:worker_phone', (req, res) => {
   getJobOfferedByWorker(req, res);
+})
+
+
+router.get('/allJobOffered/:worker_email/:worker_phone', (req, res) => {
+  getAllJobOfferedByWorker(req, res);
 })
 
 /**

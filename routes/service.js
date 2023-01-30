@@ -1,5 +1,5 @@
 import express from "express";
-import { addService, getAllServices, updateService, updateServiceStars, getAllServicesPaidByJobOfferedId,getAllServicesByJobOfferedId, getAllServicesDoneByJobOfferedId, updateServiceDone } from "../service/ServiceServices.js";
+import { addService, getAllServices, updateService, updateServiceStars,updateServicePaid, getAllServicesDoneByUser, getAllServicesPaidByJobOfferedId,getAllServicesByJobOfferedId, getAllServicesDoneByJobOfferedId, updateServiceDone } from "../service/ServiceServices.js";
 
 const router = express.Router();
 
@@ -24,10 +24,15 @@ router.get('/done/:job_offered_id', (req, res) => {
   getAllServicesDoneByJobOfferedId(req, res);
 })
 
+router.get('/doneByUser/:email/:phone_number', (req, res) => {
+  getAllServicesDoneByUser(req, res);
+})
+
 /** 
  * Lista los servicios pagados por un usuario de un determinado trabajo ofrecido
 */
 router.get('/paid/:job_offered_id', (req, res) => {
+  
   getAllServicesPaidByJobOfferedId(req, res);
 })
 
@@ -51,6 +56,13 @@ router.put('/update', (req, res) => {
 */
 router.put('/status/:service_id/:done', (req, res) => {
   updateServiceDone(req, res);
+})
+
+/** 
+ * Actualiza el estado de pago de un servicio
+*/
+router.put('/statusPaid/:service_id/:paid', (req, res) => {
+  updateServicePaid(req, res);
 })
 
 /** 

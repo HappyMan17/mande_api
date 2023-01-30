@@ -47,7 +47,33 @@ export const getJobsByWorkId = (req, res) => {
 }
 
 /**
- * Lista los trabajos ofrecidos por un trabajador
+ * Obtiene a todos los trabajos ofrecidos de la base de acuerdo con el job_offered_id
+ * @param {*} req
+ * @param {*} res
+ */
+export const getJobsByJobOfferedId = (req, res) => {
+  connect((err, client, done) => {
+    if (err) {
+      return console.error('error fetching from pool on job_offered', err);
+    }
+    const sql = `SELECT * FROM job_offered WHERE job_offered_id='${req.params.job_offered_id}';`;
+
+    client.query(sql, (err, result) => {
+
+      done(err);
+
+      if (err) {
+        return console.error('error running SELECT BY ID query in job_offered', err);
+      }
+      res.send(JSON.stringify(result.rows));
+    });
+  });
+}
+
+
+
+/**
+ * Lista trabajos ofrecidos por un trabajador que tengan signed true
  * @param {*} req
  * @param {*} res
  */
@@ -71,6 +97,34 @@ export const getJobOfferedByWorker = (req, res) => {
     });
   });
 }
+
+/**
+ * Lista todos los trabajos ofrecidos por un trabajador
+ * @param {*} req
+ * @param {*} res
+ */
+export const getAllJobOfferedByWorker = (req, res) => {
+  connect((err, client, done) => {
+    if (err) {
+      return console.error('error fetching from pool job offered', err);
+    }
+
+    const sql = `SELECT * FROM job_offered WHERE worker_email='${req.params.worker_email}' 
+      AND worker_phone_number='${req.params.worker_phone}'`;
+
+    client.query(sql, (err, result) => {
+
+      done(err);
+
+      if (err) {
+        return console.error('error running SELECT BY ID AQUII query in job_offered', err);
+      }
+      res.send(JSON.stringify(result.rows));
+    });
+  });
+}
+
+
 
 /**
  * Añade a un trabajo ofrecido por un trabajador a la base de datos
