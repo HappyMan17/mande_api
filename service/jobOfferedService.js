@@ -137,8 +137,8 @@ export const addJobOffered = (req, res) => {
       return console.error('error fetching from pool on job_offered', err);
     }
 
-    const sql = `INSERT INTO job_offered(job_offered_id, worker_email, worker_phone_number, 
-      work_id, signed, cost_per_service) VALUES ('${req.body.job_offered_id}', '${req.body.worker_email}',
+    const sql = `INSERT INTO job_offered(worker_email, worker_phone_number, 
+      work_id, signed, cost_per_service) VALUES ('${req.body.worker_email}',
       '${req.body.worker_phone_number}', '${req.body.work_id}', 'false', '${req.body.cost_per_service}');`;
 
     client.query(sql, (err, result) => {

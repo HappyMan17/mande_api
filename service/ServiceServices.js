@@ -139,9 +139,8 @@ export const addService = (req, res) => {
     }
 
     console.log(req.body.user_phone,req.body.paid,req.body.done);
-    const sql = `INSERT INTO service(service_id, job_offered_id, user_email, user_phone, cost, 
-      service_stars, date_begin, date_end, paid, done) VALUES ('${req.body.service_id}',
-      '${req.body.job_offered_id}', '${req.body.user_email}', '${req.body.user_phone}', '${req.body.cost}', 
+    const sql = `INSERT INTO service(job_offered_id, user_email, user_phone, cost, 
+      service_stars, date_begin, date_end, paid, done) VALUES ('${req.body.job_offered_id}', '${req.body.user_email}', '${req.body.user_phone}', '${req.body.cost}', 
       '${req.body.service_stars}', '${req.body.date_begin}','${req.body.date_end}','${req.body.paid}',
       '${req.body.done}');`
     
