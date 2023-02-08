@@ -86,25 +86,29 @@ export const getWorkerByEmailAndPhoneNumber = (req, res) => {
  */
 export const addWorker = (req, res) => {
   connect((err, client, done) => {
+    const file = req.files;
     if (err) {
       return console.error('error fetching from pool on worker', err);
     }
-
-    console.log(`AVALAIBLE ${req.body.email}`);
+    if (!file) {
+      return console.error('error no se encontró el archivo', err);
+    }
+    const profileImage = file['profile_image'];
+    const identification = file['identification_image'];
+    const body = req.body;
 
     const sql = `INSERT INTO worker(email, phone_number, worker_name, worker_last_name, profile_image, 
-      identification_image, address, stars, available, is_active ) VALUES ('${req.body.email}', 
-      '${req.body.phone_number}', '${req.body.worker_name}', '${req.body.worker_last_name}', '${req.body.profile_image}',
-      '${req.body.identification_image}', '${req.body.address}', '${req.body.stars}','${req.body.available}', '${req.body.is_active}');`;
-
+      identification_image, worker_address, stars, available, is_active ) VALUES ('${req.body.email}', 
+      '${req.body.phone_number}', '${req.body.worker_name}', '${req.body.worker_last_name}', 
+      'worker/${profileImage[0].fieldname}_${body.email}_${body.phone_number}.jpg',
+      'worker/${identification[0].fieldname}_${body.email}_${body.phone_number}.jpg', '${req.body.worker_address}', 
+      '0','true', 'true');`;
     client.query(sql, (err, result) => {
-
       done(err);
-
       if (err) {
         return console.error('error running INSERT query on worker', err);
       }
-      res.send(JSON.stringify(result.rows));
+      //res.send(JSON.stringify(result.rows));
     });
   });
 }

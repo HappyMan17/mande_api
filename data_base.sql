@@ -68,7 +68,11 @@ CREATE TABLE payment(
 
 INSERT INTO work(work_name, description) 
   VALUES ('Profesor de inglés', 'Clases particulares de inglés para fines acádemicos y personales');
-INSERT INTO work (work_name, description) 
+INSERT INTO work(work_name, description) 
   VALUES ('Destapador de baños', 'Encargado de cualquier emergencia con el sanitario: destapa, limpia y soluciona problemas del inodoro');
-INSERT INTO work (work_name, description) 
+INSERT INTO work(work_name, description) 
   VALUES ('Fotografo', 'Toma fotos en eventos u ocasiones especiales, realiza vídeos de un evento si desea');
+INSERT INTO work(work_name, description) 
+  VALUES ('Cocinero', 'Preparación de comidas para eventos especiales: bodas, cumpleaños, primera comunión, etc');
+INSERT INTO work(work_name, description) 
+VALUES ('Taxista', 'Servicio de taxi para cualquier parte de Cali: Sucre, Vergel, Manuela Beltrán, donde sea ');

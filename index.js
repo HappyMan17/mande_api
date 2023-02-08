@@ -8,6 +8,7 @@ import authRouter from './routes/auth.js';
 import workRouter from './routes/work.js';
 import jobOfferedRouter from './routes/jobOffered.js';
 import serviceRouter from './routes/service.js';
+import imagesRouter from './routes/images.js';
 
 const port = 3000;
 
@@ -26,6 +27,7 @@ app.use("/mande/worker", workerRouter);
 app.use("/mande/work", workRouter);
 app.use("/mande/jobs", jobOfferedRouter);
 app.use("/mande/service", serviceRouter);
+app.use("/mande/images", imagesRouter);
 
 app.get('/mande', (req, res) => {
     res.send("API response");

@@ -4,7 +4,14 @@ import express from 'express';
 import {getAllUsers, addUser, updateUser, deleteUser, getUserByEmailAndPhoneNumber, uploadFile} from "../service/userService.js";
 import multer from 'multer';
 
-const upload = multer({dest:'uploads/'});
+const storage = multer.diskStorage({
+  destination: './uploads/user/',
+  filename: (req, file, cb) => {
+    cb(null, file.fieldname+'_'+req.body.email+'_'+req.body.phone_number+'.jpg');
+  },
+})
+
+const upload = multer({storage: storage});
 const router = express.Router();
 
 /**
@@ -25,7 +32,7 @@ router.get('/:email/:phone',(req, res) => {
 /**
  * Añade un nuevo usuario
  */
-router.post('/add', (req, res, next) => {
+router.post('/add', upload.single('public_services'), (req, res, next) => {
   addUser(req,res);
 })
 
@@ -44,10 +51,12 @@ router.put('/delete', (req, res, next) => {
 })
 
 /**
- * Guarda un archivo
+ * Guarda un archivo en la carpeta uploads
  */
-router.post('/upload', upload.single('Image'), (req, res, next) => {
+/*
+router.post('/upload', upload.single('public_services'), (req, res, next) => {
   uploadFile(req, res);
 })
+*/
 
 export default router;

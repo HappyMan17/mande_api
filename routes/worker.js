@@ -1,6 +1,15 @@
 import express from "express";
-import {getAllWorkers, addWorker, updateWorker, deleteWorker, getWorkerByEmailAndPhoneNumber, updateWorkerIsActive,getWorkerKey} from '../service/workerService.js'
+import {getAllWorkers, addWorker, updateWorker, deleteWorker, updateWorkerIsActive,getWorkerKey} from '../service/workerService.js'
+import multer from "multer";
 
+const storage = multer.diskStorage({
+  destination: './uploads/worker/',
+  filename: (req, file, cb) => {
+    cb(null, file.fieldname+'_'+req.body.email+'_'+req.body.phone_number+'.jpg');
+  },
+})
+
+const upload = multer({storage: storage});
 const router = express.Router();
 
 /**
@@ -17,7 +26,8 @@ router.get('/byKey/:email/:phone_number', (req, res) => {
 /**
  * Añade un nuevo trabajador
  */
-router.post('/add', (req, res, next) => {
+const files = upload.fields([{ name: 'profile_image' }, { name: 'identification_image' }]);
+router.post('/add', files, (req, res, next) => {
   addWorker(req, res);
 })
 
