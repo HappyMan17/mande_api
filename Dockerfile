@@ -1,7 +1,13 @@
 FROM node:17
 
 # Create app directory
-WORKDIR /devHappy/db_proyect/mande_api
+WORKDIR /devhappy/mande_api
 
-EXPOSE 8080
-CMD [ "npm", "start" ]
+COPY package*.json ./
+
+RUN npm install
+
+COPY . .
+
+EXPOSE 4000
+CMD [ "npm", "run", "dev" ]

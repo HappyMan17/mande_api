@@ -1,7 +1,7 @@
 const config = {
-    "user": "santiago", //env var: PGUSER
+    "user": "happy", //env var: PGUSER
     "database": "mande_db", //env var: PGDATABASE
-    "password": "ynwa2308", //env var: PGPASSWORD
+    "password": "letmeinnow", //env var: PGPASSWORD
     "host": "localhost", // Server hosting the postgres database
     "port": 5432, //env var: PGPORT
     "max": 10, // max number of clients in the pool

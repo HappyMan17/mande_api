@@ -1,10 +1,14 @@
 import express from 'express';
-import userRouter from './routes/user.js';
 import bodyParser from "body-parser";
-import mainRouter from './routes/main.js';
-//const cors = require('cors');
 import cors from 'cors';
+import userRouter from './routes/user.js';
+import workerRouter from './routes/worker.js';
+import mainRouter from './routes/main.js';
 import authRouter from './routes/auth.js';
+import workRouter from './routes/work.js';
+import jobOfferedRouter from './routes/jobOffered.js';
+import serviceRouter from './routes/service.js';
+import imagesRouter from './routes/images.js';
 
 const port = 3000;
 
@@ -19,6 +23,11 @@ app.use(bodyParser.json());
 app.use('/',mainRouter);
 app.use('/mande/user', userRouter);
 app.use("/mande/auth", authRouter);
+app.use("/mande/worker", workerRouter);
+app.use("/mande/work", workRouter);
+app.use("/mande/jobs", jobOfferedRouter);
+app.use("/mande/service", serviceRouter);
+app.use("/mande/images", imagesRouter);
 
 app.get('/mande', (req, res) => {
     res.send("API response");

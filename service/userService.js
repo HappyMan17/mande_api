@@ -1,111 +1,161 @@
 import connect from '../routes/pool.js';
 
+/**
+ * Query para obtener todos los usuarios de la base
+ * @param {*} res 
+ */
 export const getAllUsers = (res) => {
   connect((err, client, done) => {
     if (err) {
-      return console.error('error fetching users from pool', err);
+      return console.error('error fetching from pool on user', err);
     }
 
-    //use the client for executing the query
     client.query('SELECT * FROM user_table;', (err, result) => {
-      //call `done(err)` to release the client back to the pool (or destroy it if there is an error)
+
       done(err);
 
       if (err) {
-        return console.error('error running SELECT query', err);
+        return console.error('error running SELECT query on user', err);
       }
       res.send(JSON.stringify(result.rows));
     });
   });
 }
 
-export const getUserByEmailAndPhoneNumber = (req,res) => {
-  connect((err, client, done) => {
-    if (err) {
-      return console.error('error fetching users from pool', err);
-    }
-    const sql = `SELECT * FROM user_table WHERE email='${req.body.email}' AND phone_number='${req.body.phone_number}';`
-    //use the client for executing the query
-    client.query(sql, (err, result) => {
-      //call `done(err)` to release the client back to the pool (or destroy it if there is an error)
-      done(err);
-
+/**
+ * Promesa que se utiliza para la autenticación
+ * @param {*} req 
+ * @param {*} res 
+ * @returns 
+ */
+export const getUserByEmailAndPhoneNumber = (req, res) => {
+  return new Promise((resolve, reject) => {
+    connect((err, client, done) => {
       if (err) {
-        return console.error('error running SELECT query', err);
+        return reject(err);
       }
-      res.send(JSON.stringify(result.rows));
+      const sql = `SELECT * FROM user_table WHERE email='${req.body.email}' AND phone_number='${req.body.phone_number}';`;
+
+      client.query(sql, (err, result) => {
+
+        done(err);
+
+        if (err) {
+          return reject(err);
+        }
+
+        if (result.rows.length === 0) {
+          // No se encontró el usuario
+          return reject(new Error("Usuario no encontrado"));
+        }
+
+        // Usuario encontrado
+        resolve(result.rows[0]);
+      });
     });
   });
 }
 
-export const addUser = (res) => {
+/**
+ * Añade a un usuario a la base
+ * @param {*} req 
+ * @param {*} res 
+ */
+export const addUser = (req,res) => {
   connect(function (err, client, done) {
     if (err) {
-      return console.error('error ADDING user from pool', err);
+      return console.error('error fetching from pool on user', err);
+    }
+    const file = req.file;
+    if(!file) {
+      res.status(400).send("something went wrong!")
     }
 
-    const sql = 
-      `INSERT INTO user_table(
-        email, phone_number, profile_picture, identification, address, public_services, payment_method,
-        is_active) VALUES (
-        '${req.body.email}', '${req.body.phone_number}', '${req.body.profile_picture}', 
-        '${req.body.identification}', '${req.body.address}', '${req.body.public_services}', 
-        '${req.body.payment_method}', '${req.body.is_active}'
-      );`;
+    const sql = `INSERT INTO user_table(email, phone_number, user_name, user_last_name, 
+      user_address, public_services, payment_method, is_active) VALUES ('${req.body.email}', 
+      '${req.body.phone_number}', '${req.body.user_name}', '${req.body.user_last_name}', 
+      '${req.body.address}', 'user/${'public_services_'+req.body.email+'_'+req.body.phone_number+'.jpg'}', '${req.body.payment_method}', 
+      'true');`;
     
-    //use the client for executing the query
     client.query(sql, (err, result) => {
       done(err);
       if (err) {
-        return console.error('error running INSERT query', err);
+        return console.error('error running INSERT query on user', err);
+      }
+      //res.send(JSON.stringify(result));
+    });
+  });
+}
+
+
+/**
+ * actualiza a un usuario en la base de datos
+ * @param {*} req 
+ * @param {*} res 
+ */
+export const updateUser = (req, res) =>{
+  connect(function (err, client, done) {
+    if (err) {
+      return console.error('error fetching from pool on user', err);
+    }
+
+    const sql = `UPDATE user_table SET user_name='${req.body.user_name}', 
+      user_last_name='${req.body.user_last_name}', address='${req.body.address}', 
+      public_services='${req.body.public_services}', payment_method='${req.body.payment_method}', 
+      is_active='${req.body.is_active}' WHERE email ='${req.body.email}' AND 
+      phone_number='${req.body.phone_number}';` 
+
+    client.query(sql, (err, result) => {
+      done(err);
+      if (err) {
+        return console.error('error running UPDATE query on user', err);
       }
       res.send(JSON.stringify(result));
     });
   });
 }
 
-export const updateUser = (res) =>{
+/**
+ * Elimina a un usuario de la base, cambiando su is_active a false
+ * @param {*} req 
+ * @param {*} res 
+ */
+export const deleteUser = (req, res) =>{
   connect(function (err, client, done) {
     if (err) {
-      return console.error('error UPDATING user from pool', err);
+      return console.error('error fetching from pool on user', err);
     }
 
-    const sql = 
-      `UPDATE user_table SET 
-        profile_picture = '${req.body.profile_picture}', identification = '${req.body.identification}', 
-        address = '${req.body.address}', public_services = '${req.body.public_services}', 
-        payment_method = '${req.body.payment_method}', is_active = '${req.body.is_active}' 
-      WHERE email = '${req.body.email}' AND phone_number = '${req.body.phone_number}';` 
-
-    console.log(sql);
-    //use the client for executing the query
-    client.query(sql, (err, result) => {
-      done(err);
-      if (err) {
-        return console.error('error running UPDATE query', err);
-      }
-      res.send(JSON.stringify(result));
-    });
-  });
-}
-
-export const deleteUser = (res) =>{
-  connect(function (err, client, done) {
-    if (err) {
-      return console.error('error deleting user from pool', err);
-    }
-
-    const sql = 
-      `UPDATE user_table SET is_active='${req.body.is_active}'
+    const sql = `UPDATE user_table SET is_active='false' 
       WHERE email='${req.body.email}' AND phone_number='${req.body.phone_number}';` 
 
-    //use the client for executing the query
     client.query(sql, (err, result) => {
       done(err);
       if (err) {
-        return console.error('error running DELETE query', err);
+        return console.error('error running DELETE query on user', err);
       }
       res.send(JSON.stringify(result));
     });
   });
+}
+
+/**
+ * Permite guardar archivos en el back
+ * @param {*} req 
+ * @param {*} res 
+ */
+export const uploadFile = (req, res) => {
+  connect(function (err, client, done) {
+    if (err) {
+      return console.error('error connecting to the pool on upload', err);
+    }
+
+    const file = req.file;
+    if(!file) {
+      res.status(400).send("something went wrong!")
+    }
+    console.log('file ', req.file);
+    console.log('address ', req.body);
+    res.send(req.file);
+  })
 }
